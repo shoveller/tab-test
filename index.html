@@ -42,16 +42,59 @@
     </ul>
     <script>
       const tabs = document.querySelectorAll("a");
-
       document.querySelectorAll("ul")[0].onclick = (e) => {
         e.preventDefault();
-        tabs.forEach((tab) => {
+        const index = Array.from(tabs).indexOf(e.target);
+        history.pushState(null, null, `?tab=${index}`);
+
+        e.target.classList.add("bg-blue-600");
+        e.target.classList.add("text-white");
+
+        tabs.forEach((tab, tabIndex) => {
+          if (index !== tabIndex) {
+            tab.classList.remove("bg-blue-600");
+            tab.classList.remove("text-white");
+          }
+        });
+      };
+    </script>
+    <script>
+      window.addEventListener("load", (e) => {
+        const tabIndex = parseInt(
+          new URL(location).searchParams.get("tab"),
+          10
+        );
+        const tabs = document.querySelectorAll("a");
+        tabs.forEach((tab, index) => {
+          if (index === tabIndex) {
+            tab.classList.add("bg-blue-600");
+            tab.classList.add("text-white");
+            return;
+          }
+
           tab.classList.remove("bg-blue-600");
           tab.classList.remove("text-white");
         });
-        e.target.classList.add("bg-blue-600");
-        e.target.classList.add("text-white");
-      };
+      });
+    </script>
+    <script>
+      window.addEventListener("popstate", (e) => {
+        const tabIndex = parseInt(
+          new URL(location).searchParams.get("tab"),
+          10
+        );
+        const tabs = document.querySelectorAll("a");
+        tabs.forEach((tab, index) => {
+          if (index === tabIndex) {
+            tab.classList.add("bg-blue-600");
+            tab.classList.add("text-white");
+            return;
+          }
+
+          tab.classList.remove("bg-blue-600");
+          tab.classList.remove("text-white");
+        });
+      });
     </script>
   </body>
 </html>
